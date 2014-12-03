@@ -14,7 +14,7 @@ else
 class ClimateTagger {
 	function add_box() {
 		add_meta_box('boxid',
-					 'Suggested Tags',
+					 'Suggested Tags (reegle)',
 					 array( ClimateTagger, 'box_routine' ),
 					 'post',
 					 'side',
