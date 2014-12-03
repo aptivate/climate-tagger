@@ -22,8 +22,6 @@ class ClimateTagger {
 	}
 
 	function box_routine() {
-		// TODO: Check if we need a limit and what is should be set to
-		$limit = 12;
 		$tags_post = self::tag_list_generate_post();
 
 		if ( empty( $tags_post ) ) {
@@ -34,7 +32,6 @@ class ClimateTagger {
 		$tags_rec = $tags_post;
 
 		arsort( $tags_rec );
-		array_splice( $tags_rec, $limit );
 
 		//TAG CLOUD
 		//Init tag cloud variables
@@ -87,7 +84,7 @@ class ClimateTagger {
 			'locale' => 'en', // TODO get language of post
 			'format' => 'json',
 			'token' => $token,
-			'countConcepts' => 100,
+			'countConcepts' => 100, // TODO make limit configurable
 		);
 
 		$response = wp_remote_post( $url, array( 'body' => $fields ) );
