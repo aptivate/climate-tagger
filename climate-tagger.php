@@ -72,15 +72,39 @@ class ClimateTagger {
 		$content = $post->post_title .  ' ' . $post->post_content;
 
 		// TODO send $content to tagging API
+
+		// http://api.reegle.info/documentation
+
 		// build $phrases as array of 'word' => strength
 
-		$phrases = array(
-			'Climate finance' => 12,
-			'SIDS' => 2,
-			'Zambia' => 6,
+		$url = 'http://api.reegle.info/service/extract';
+
+		// TODO: Make option
+		$token = '7b8b9ec6eaae437ea8321995aada08fa';
+
+		$fields = array(
+			'text' => $content,
+			'locale' => 'en', // TODO get language of post
+			'format' => 'json',
+			'token' => $token,
+			'countConcepts' => 100,
 		);
 
-		return $phrases;
+		$response = wp_remote_post( $url, array( 'body' => $fields ) );
+
+		// TODO - check for unexpected response or site down
+
+		$result = json_decode( $response['body'], true );
+
+		$concepts = $result['concepts'];
+
+		$tags = array();
+
+		foreach ( $concepts as $concept ) {
+			$tags[ $concept['prefLabel'] ] = $concept['score'];
+		}
+
+		return $tags;
 	}
 
 	function admin_add_my_script()
