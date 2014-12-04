@@ -22,9 +22,14 @@ class ClimateTagger {
 	}
 
 	function box_routine() {
-		$tags_post = self::tag_list_generate_post();
+		$response = self::get_reegle_tagger_response();
+		if ( $response['response']['code'] != 200 ) {
+			echo $response['body'];
+			return;
+		}
 
-		if ( empty( $tags_post ) ) {
+		$tags_post = self::get_tags_from_response( $response );
+		if ( count( $tags_post ) == 0 ) {
 			echo "Click 'Save Draft' to refresh tag suggestions.";
 			return;
 		}
@@ -59,38 +64,33 @@ class ClimateTagger {
 		echo "&nbsp&nbsp&nbsp";
 	}
 
-	function tag_list_generate_post() {
+	function get_reegle_tagger_response() {
 		global $post;
-
-		$phrase_length_max = 4;
-		$phrases = array();
 
 		//Initialize post content
 		$content = $post->post_title .  ' ' . $post->post_content;
 
-		// TODO send $content to tagging API
-
 		// http://api.reegle.info/documentation
-
-		// build $phrases as array of 'word' => strength
 
 		$url = 'http://api.reegle.info/service/extract';
 
 		// TODO: Make option
 		$token = '7b8b9ec6eaae437ea8321995aada08fa';
 
+		$language = apply_filters( 'climate-tagger-language', 'en', $post );
+
 		$fields = array(
 			'text' => $content,
-			'locale' => 'en', // TODO get language of post
+			'locale' => $language,
 			'format' => 'json',
 			'token' => $token,
 			'countConcepts' => 100, // TODO make limit configurable
 		);
 
-		$response = wp_remote_post( $url, array( 'body' => $fields ) );
+		return wp_remote_post( $url, array( 'body' => $fields ) );
+	}
 
-		// TODO - check for unexpected response or site down
-
+	function get_tags_from_response( $response ) {
 		$result = json_decode( $response['body'], true );
 
 		$concepts = $result['concepts'];
