@@ -23,6 +23,12 @@ class ClimateTagger {
 
 	function box_routine() {
 		$response = self::get_reegle_tagger_response();
+
+		if ( is_wp_error( $response ) ) {
+			echo $response->get_error_message();
+			return;
+		}
+
 		if ( $response['response']['code'] != 200 ) {
 			echo $response['body'];
 			return;
