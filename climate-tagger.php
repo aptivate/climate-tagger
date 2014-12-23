@@ -13,12 +13,17 @@ else
 
 class ClimateTagger {
 	function add_box() {
-		add_meta_box('boxid',
-					 'Suggested Tags (reegle)',
-					 array( ClimateTagger, 'box_routine' ),
-					 'post',
-					 'side',
-					 'low');
+		// TODO: Make configurable
+		$post_types = array( 'post', 'project' );
+
+		foreach ( $post_types as $post_type ) {
+			add_meta_box('boxid',
+						 'Suggested Tags (reegle)',
+						 array( ClimateTagger, 'box_routine' ),
+						 $post_type,
+						 'side',
+						 'low');
+		}
 	}
 
 	function box_routine() {
