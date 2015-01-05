@@ -32,21 +32,6 @@ class ClimateTagger {
 			'climate_tagger_general_settings',
 			'climate_tagger_general_settings'
 		);
-
-		add_settings_section(
-			'climate_tagger_general_section',
-			'General Settings',
-			array( 'ClimateTagger', 'print_section_info' ),
-			'climate_tagger_general_settings'
-		);
-
-		add_settings_field(
-			'token',
-			'reegle API Key',
-			array( 'ClimateTagger', 'posttype_callback' ),
-			'climate_tagger_general_settings',
-			'climate_tagger_general_section'
-		);
 	}
 
 	function set_defaults() {
