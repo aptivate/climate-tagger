@@ -157,12 +157,12 @@ class ClimateTagger {
 			return;
 		}
 
-		$tags_rec = $tags_post;
+		self::print_tag_cloud( $tags_post );
+	}
 
+	function print_tag_cloud( $tags_rec ) {
 		arsort( $tags_rec );
 
-		//TAG CLOUD
-		//Init tag cloud variables
 		$min_size = 10;
 		$max_size = 24;
 
@@ -176,15 +176,14 @@ class ClimateTagger {
 
 		$step = ( $max_size - $min_size ) / $spread;
 
-		//Print tag cloud
 		foreach ( $tags_rec as $tag_name => $tag_strength ) {
 			$size = $min_size + ($tag_strength - $minimum_strength) * $step;
 				?>
 				<a href="#" style="font-size: <?php echo "$size"?>pt;" onClick="tag_add('<?php echo $tag_name; ?>');return false;"><?php echo "$tag_name"?></a>
 <?php
 		}
-		//Space between tags
-		echo "&nbsp&nbsp&nbsp";
+
+		echo '&nbsp&nbsp&nbsp';
 	}
 
 	function get_reegle_tagger_response() {
@@ -228,8 +227,11 @@ class ClimateTagger {
 
 	function admin_add_my_script()
 	{
-		wp_enqueue_script( 'climate-tagger-add-tag', CLIMATE_TAGGER_INCLUDES . '/climate-tagger-add-tag.js',
-						   array( 'jquery' ) );
+		wp_enqueue_script(
+			'climate-tagger-add-tag',
+			CLIMATE_TAGGER_INCLUDES . '/climate-tagger-add-tag.js',
+			array( 'jquery' )
+		);
 	}
 }
 
