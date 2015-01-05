@@ -43,6 +43,7 @@ class ClimateTagger {
 			array(
 				'token' => '',
 				'limit' => '20',
+				'post_types' => 'post',
 			) );
 
 		update_option( 'climate_tagger_general_settings', $options );
@@ -80,6 +81,19 @@ class ClimateTagger {
 		</tr>
 
 		<tr valign="top">
+		<th scope="row">Post types:</th>
+		<td>
+<?php
+		printf(
+			'<input type="text" id="climate-tagger-post-types" name="climate_tagger_general_settings[post_types]" value="%s" />',
+			esc_attr( $options['post_types'] )
+		);
+		echo '<br /><span class="description">Supported post types, separated by commas.</span>';
+		?>
+		</td>
+		</tr>
+
+		<tr valign="top">
 		<th scope="row">Maximum number of tags:</th>
 		<td>
 <?php
@@ -109,16 +123,18 @@ class ClimateTagger {
 	}
 
 	function add_box() {
-		// TODO: Make configurable
-		$post_types = array( 'post', 'project' );
+		$options = get_option( 'climate_tagger_general_settings' );
+
+		$post_types = explode( ',', $options['post_types'] );
 
 		foreach ( $post_types as $post_type ) {
-			add_meta_box('boxid',
-						 'Suggested Tags (reegle)',
-						 array( ClimateTagger, 'box_routine' ),
-						 $post_type,
-						 'side',
-						 'low');
+			add_meta_box(
+				'boxid',
+				'Suggested Tags (reegle)',
+				array( ClimateTagger, 'box_routine' ),
+				trim( $post_type ),
+				'side',
+				'low');
 		}
 	}
 
