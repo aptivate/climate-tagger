@@ -3,7 +3,7 @@
   Plugin Name: Climate Tagger
   Description: Recommends tags in a tag cloud based on reegle tagging API.
   Version: 0.1
-  Author: Aptivate, Jimmy O'Higgins
+  Author: Aptivate
 */
 
 if ( is_dir( WPMU_PLUGIN_DIR . '/climate-tagger' ) ) {
@@ -42,6 +42,7 @@ class ClimateTagger {
 			$options,
 			array(
 				'token' => '',
+				'limit' => '20',
 			) );
 
 		update_option( 'climate_tagger_general_settings', $options );
@@ -66,14 +67,27 @@ class ClimateTagger {
 
 		<table class="form-table">
 		<tr valign="top">
-		<th scope="row">Authentication token :</th>
+		<th scope="row">Authentication token:</th>
 		<td>
 <?php
 		printf(
-			'<input type="text" id="token" name="climate_tagger_general_settings[token]" value="%s" size="50" />',
+			'<input type="text" id="climate-tagger-token" name="climate_tagger_general_settings[token]" value="%s" size="50" />',
 			esc_attr( $options['token'] )
 		);
 		echo '<br /><span class="description">A valid authentication token that has been generated in the reegle API dashboard. <a href="http://api.reegle.info/register/" target="_blank">http://api.reegle.info/register</a></span>';
+		?>
+		</td>
+		</tr>
+
+		<tr valign="top">
+		<th scope="row">Maximum number of tags:</th>
+		<td>
+<?php
+		printf(
+			'<input type="text" id="climate-tagger-limit" name="climate_tagger_general_settings[limit]" value="%s" size="5" />',
+			esc_attr( $options['limit'] )
+		);
+		echo '<br /><span class="description">Maximum number of tags to retrieve from the reegle API and display in the word cloud.</span>';
 		?>
 		</td>
 		</tr>
@@ -176,7 +190,7 @@ class ClimateTagger {
 			'locale' => $language,
 			'format' => 'json',
 			'token' => $options['token'],
-			'countConcepts' => 100, // TODO make limit configurable
+			'countConcepts' => $options['limit'],
 		);
 
 		return wp_remote_post( $url, array( 'body' => $fields ) );
