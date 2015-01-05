@@ -189,8 +189,16 @@ class ClimateTagger {
 	function get_reegle_tagger_response() {
 		global $post;
 
-		//Initialize post content
 		$content = $post->post_title .  ' ' . $post->post_content;
+
+		$content = apply_filters(
+			'climate-tagger-content',
+			$content,
+			$post );
+
+		if ( is_wp_error( $content ) ) {
+			return $content;
+		}
 
 		// http://api.reegle.info/documentation
 
