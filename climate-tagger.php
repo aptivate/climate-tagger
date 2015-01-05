@@ -6,12 +6,109 @@
   Author: Aptivate, Jimmy O'Higgins
 */
 
-if ( is_dir( WPMU_PLUGIN_DIR . '/climate-tagger' ) )
+if ( is_dir( WPMU_PLUGIN_DIR . '/climate-tagger' ) ) {
 	define( 'CLIMATE_TAGGER_INCLUDES', WPMU_PLUGIN_URL . '/climate-tagger' );
-else
+} else {
 	define( 'CLIMATE_TAGGER_INCLUDES', WP_PLUGIN_URL . '/climate-tagger' );
+}
 
 class ClimateTagger {
+
+	function admin_menu() {
+		add_options_page(
+			'Climate Tagger',
+			'Climate Tagger',
+			'manage_options',
+			'climate-tagger',
+			array( 'ClimateTagger', 'add_options_page_callback' ));
+
+	}
+
+	function admin_init()
+	{
+		self::set_defaults();
+
+		register_setting(
+			'climate_tagger_general_settings',
+			'climate_tagger_general_settings'
+		);
+
+		add_settings_section(
+			'climate_tagger_general_section',
+			'General Settings',
+			array( 'ClimateTagger', 'print_section_info' ),
+			'climate_tagger_general_settings'
+		);
+
+		add_settings_field(
+			'token',
+			'reegle API Key',
+			array( 'ClimateTagger', 'posttype_callback' ),
+			'climate_tagger_general_settings',
+			'climate_tagger_general_section'
+		);
+	}
+
+	function set_defaults() {
+
+		$options = get_option( 'climate_tagger_general_settings' );
+
+		$options = wp_parse_args(
+			$options,
+			array(
+				'token' => '',
+			) );
+
+		update_option( 'climate_tagger_general_settings', $options );
+
+	}
+
+	function add_options_page_callback() {
+		?>
+		<div class="wrap">
+		<h2>Climate Tagger by Aptivate</h2>
+
+		<div>
+
+		<form method="post" action="options.php">
+
+<?php
+		settings_fields( 'climate_tagger_general_settings' );
+		$options = get_option( 'climate_tagger_general_settings' );
+
+		?>
+		<h3>General Settings</h3>
+
+		<table class="form-table">
+		<tr valign="top">
+		<th scope="row">Authentication token :</th>
+		<td>
+<?php
+		printf(
+			'<input type="text" id="token" name="climate_tagger_general_settings[token]" value="%s" size="50" />',
+			esc_attr( $options['token'] )
+		);
+		echo '<br /><span class="description">A valid authentication token that has been generated in the reegle API dashboard. <a href="http://api.reegle.info/register/" target="_blank">http://api.reegle.info/register</a></span>';
+		?>
+		</td>
+		</tr>
+
+		</table>
+
+
+<?php
+		submit_button();
+		?>
+
+		</form>
+
+			  </div>
+
+											</div>
+<?php
+
+	}
+
 	function add_box() {
 		// TODO: Make configurable
 		$post_types = array( 'post', 'project' );
@@ -85,8 +182,7 @@ class ClimateTagger {
 
 		$url = 'http://api.reegle.info/service/extract';
 
-		// TODO: Make option
-		$token = '7b8b9ec6eaae437ea8321995aada08fa';
+		$options = get_option( 'climate_tagger_general_settings' );
 
 		$language = apply_filters( 'climate-tagger-language', 'en', $post );
 
@@ -94,7 +190,7 @@ class ClimateTagger {
 			'text' => $content,
 			'locale' => $language,
 			'format' => 'json',
-			'token' => $token,
+			'token' => $options['token'],
 			'countConcepts' => 100, // TODO make limit configurable
 		);
 
@@ -123,6 +219,9 @@ class ClimateTagger {
 }
 
 if ( is_admin() ) {
+	add_action( 'admin_menu', array( 'ClimateTagger', 'admin_menu' ) );
+	add_action( 'admin_init', array( 'ClimateTagger', 'admin_init' ) );
+
 	add_action( 'admin_menu',
 				array( 'ClimateTagger', 'add_box' ) );
 	add_action( 'admin_print_scripts',
