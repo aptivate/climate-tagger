@@ -71,6 +71,23 @@ EOT;
 		);
 	}
 
+	public function test_by_default_language_is_english() {
+		$tagger = new ClimateTagger();
+
+		$this->get_new_post();
+
+		$tagger->get_reegle_tagger_response();
+
+		global $_CLIMATE_TAGGER_MOCK_POST;
+
+		$locale = $_CLIMATE_TAGGER_MOCK_POST['locale'];
+
+		$this->assertThat(
+			$locale,
+			$this->equalTo( 'en' )
+		);
+	}
+
 	private function get_new_post() {
 		global $post;
 		$post = new StdClass();
