@@ -113,6 +113,23 @@ EOT;
 		return 'es';
 	}
 
+	public function test_format_is_json() {
+		$tagger = new ClimateTagger();
+
+		$this->get_new_post();
+
+		$tagger->get_reegle_tagger_response();
+
+		global $_CLIMATE_TAGGER_MOCK_POST;
+
+		$format = $_CLIMATE_TAGGER_MOCK_POST['format'];
+
+		$this->assertThat(
+			$format,
+			$this->equalTo( 'json' )
+		);
+	}
+
 	private function get_new_post() {
 		global $post;
 		$post = new StdClass();
