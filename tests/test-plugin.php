@@ -2,6 +2,7 @@
 
 require_once 'climate-tagger.php';
 require_once 'mock-remote-post.php';
+require_once 'mock-option.php';
 
 class PluginTest extends WP_UnitTestCase {
 
@@ -130,6 +131,26 @@ EOT;
 		);
 	}
 
+	public function test_api_token_retrieved_from_options() {
+		$tagger = new ClimateTagger();
+
+		$this->set_option( 'token',
+			'dfkgjOoldsg3kKD6FSfkp7of9sjs8dofsdjosdfjA' );
+
+		$this->get_new_post();
+
+		$tagger->get_reegle_tagger_response();
+
+		global $_CLIMATE_TAGGER_MOCK_POST;
+
+		$token = $_CLIMATE_TAGGER_MOCK_POST['token'];
+
+		$this->assertThat(
+			$token,
+			$this->equalTo( 'dfkgjOoldsg3kKD6FSfkp7of9sjs8dofsdjosdfjA' )
+		);
+	}
+
 	private function get_new_post() {
 		global $post;
 		$post = new StdClass();
@@ -137,5 +158,11 @@ EOT;
 		$post->post_content = '';
 
 		return $post;
+	}
+
+	private function set_option( $name, $value ) {
+		global $_CLIMATE_TAGGER_MOCK_OPTIONS;
+
+		$_CLIMATE_TAGGER_MOCK_OPTIONS[ $name ] = $value;
 	}
 }
