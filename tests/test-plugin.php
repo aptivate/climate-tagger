@@ -209,7 +209,7 @@ EOT;
 					array(
 						'prefLabel' => 'energy',
 						'score' => 10,
-					)
+					),
 				))),
 			'response' => array(
 				'code' => 200,
@@ -223,9 +223,9 @@ EOT;
 
 		$links = $this->get_html_elements_from_output( $output, 'a' );
 
-		$this->assertThat( (string)$links[0], $this->equalTo( 'climate change' ));
-		$this->assertThat( (string)$links[1], $this->equalTo( 'energy' ));
-		$this->assertThat( (string)$links[2], $this->equalTo( 'IPPC' ));
+		$this->assertThat( (string)$links[0], $this->equalTo( 'climate change' ) );
+		$this->assertThat( (string)$links[1], $this->equalTo( 'energy' ) );
+		$this->assertThat( (string)$links[2], $this->equalTo( 'IPPC' ) );
 	}
 
 	private function get_new_post() {
