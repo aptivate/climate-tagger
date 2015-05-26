@@ -228,6 +228,26 @@ EOT;
 		$this->assertThat( (string)$links[2], $this->equalTo( 'IPPC' ) );
 	}
 
+	public function test_error_returned_if_response_is_error() {
+		$tagger = new ClimateTagger();
+
+		$this->get_new_post();
+
+		global $_CLIMATE_TAGGER_MOCK_RESPONSE;
+
+		$error = new WP_Error();
+		$error->add( '1', 'An error occurred' );
+
+		$_CLIMATE_TAGGER_MOCK_RESPONSE = $error;
+
+		ob_start();
+		$tagger->box_routine();
+		$output = ob_get_contents();
+		ob_end_clean();
+
+		$this->assertThat( $output, $this->equalTo( 'An error occurred' ) );
+	}
+
 	private function get_new_post() {
 		global $post;
 		$post = new StdClass();
