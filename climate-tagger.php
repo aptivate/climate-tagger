@@ -183,7 +183,7 @@ class ClimateTagger {
 <?php
 		}
 
-		echo '&nbsp&nbsp&nbsp';
+		echo '&nbsp;&nbsp;&nbsp;';
 	}
 
 	function get_reegle_tagger_response() {
