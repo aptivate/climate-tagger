@@ -248,6 +248,28 @@ EOT;
 		$this->assertThat( $output, $this->equalTo( 'An error occurred' ) );
 	}
 
+	public function test_body_returned_for_non_200_status_code() {
+		$tagger = new ClimateTagger();
+
+		$this->get_new_post();
+
+		global $_CLIMATE_TAGGER_MOCK_RESPONSE;
+
+		$_CLIMATE_TAGGER_MOCK_RESPONSE = array(
+			'body' => 'Unrecognized API key',
+			'response' => array(
+				'code' => 403,
+			)
+		);
+
+		ob_start();
+		$tagger->box_routine();
+		$output = ob_get_contents();
+		ob_end_clean();
+
+		$this->assertThat( $output, $this->equalTo( 'Unrecognized API key' ) );
+	}
+
 	private function get_new_post() {
 		global $post;
 		$post = new StdClass();
