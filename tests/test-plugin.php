@@ -171,6 +171,21 @@ EOT;
 		);
 	}
 
+	public function test_api_url() {
+		$tagger = new ClimateTagger();
+
+		$this->get_new_post();
+
+		$tagger->get_reegle_tagger_response();
+
+		global $_CLIMATE_TAGGER_MOCK_URL;
+
+		$this->assertThat(
+			$_CLIMATE_TAGGER_MOCK_URL,
+			$this->equalTo( 'http://api.reegle.info/service/extract' )
+		);
+	}
+
 	private function get_new_post() {
 		global $post;
 		$post = new StdClass();
