@@ -151,6 +151,26 @@ EOT;
 		);
 	}
 
+	public function test_word_limit_retrieved_from_options() {
+		$tagger = new ClimateTagger();
+
+		$this->set_option( 'limit',
+			'25' );
+
+		$this->get_new_post();
+
+		$tagger->get_reegle_tagger_response();
+
+		global $_CLIMATE_TAGGER_MOCK_POST;
+
+		$limit = $_CLIMATE_TAGGER_MOCK_POST['countConcepts'];
+
+		$this->assertThat(
+			$limit,
+			$this->equalTo( '25' )
+		);
+	}
+
 	private function get_new_post() {
 		global $post;
 		$post = new StdClass();
