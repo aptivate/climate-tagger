@@ -1,10 +1,12 @@
 <?php
 
-class SampleTest extends WP_UnitTestCase {
+require_once 'climate-tagger.php';
 
-	function testSample() {
-		// replace this with some actual testing code
-		$this->assertTrue( true );
+class PluginTest extends WP_UnitTestCase {
+
+	public function testCanBeCreated() {
+		$tagger = new ClimateTagger();
+
+		$this->assertThat( $tagger, $this->isInstanceOf( 'ClimateTagger' ) );
 	}
 }
-
