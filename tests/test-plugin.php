@@ -4,7 +4,9 @@ require_once 'climate-tagger.php';
 require_once 'mock-remote-post.php';
 require_once 'mock-option.php';
 
-class PluginTest extends WP_UnitTestCase {
+require_once 'ClimateTaggerTestBase.php';
+
+class PluginTest extends ClimateTaggerTestBase {
 
 	public function test_can_be_created() {
 		$tagger = new ClimateTagger();
@@ -184,6 +186,46 @@ EOT;
 			$_CLIMATE_TAGGER_MOCK_URL,
 			$this->equalTo( 'http://api.reegle.info/service/extract' )
 		);
+	}
+
+	public function test_tags_ordered_by_score() {
+		$tagger = new ClimateTagger();
+
+		$this->get_new_post();
+
+		global $_CLIMATE_TAGGER_MOCK_RESPONSE;
+
+		$_CLIMATE_TAGGER_MOCK_RESPONSE = array(
+			'body' => json_encode(array(
+				'concepts' => array(
+					array(
+						'prefLabel' => 'climate change',
+						'score' => 20,
+					),
+					array(
+						'prefLabel' => 'IPPC',
+						'score' => 1,
+					),
+					array(
+						'prefLabel' => 'energy',
+						'score' => 10,
+					)
+				))),
+			'response' => array(
+				'code' => 200,
+			)
+		);
+
+		ob_start();
+		$tagger->box_routine();
+		$output = ob_get_contents();
+		ob_end_clean();
+
+		$links = $this->get_html_elements_from_output( $output, 'a' );
+
+		$this->assertThat( (string)$links[0], $this->equalTo( 'climate change' ));
+		$this->assertThat( (string)$links[1], $this->equalTo( 'energy' ));
+		$this->assertThat( (string)$links[2], $this->equalTo( 'IPPC' ));
 	}
 
 	private function get_new_post() {
