@@ -270,6 +270,36 @@ EOT;
 		$this->assertThat( $output, $this->equalTo( 'Unrecognized API key' ) );
 	}
 
+	public function test_user_prompted_to_save_draft_when_no_tags() {
+		$tagger = new ClimateTagger();
+
+		$this->get_new_post();
+
+		global $_CLIMATE_TAGGER_MOCK_RESPONSE;
+
+		$_CLIMATE_TAGGER_MOCK_RESPONSE = array(
+			'body' => json_encode(
+				array(
+					'concepts' => array(),
+				)
+			),
+			'response' => array(
+				'code' => 200,
+			)
+		);
+
+		ob_start();
+		$tagger->box_routine();
+		$output = ob_get_contents();
+		ob_end_clean();
+
+		$this->assertThat(
+			$output,
+			$this->equalTo( "Click 'Save Draft' to refresh tag suggestions."
+			)
+		);
+	}
+
 	private function get_new_post() {
 		global $post;
 		$post = new StdClass();
