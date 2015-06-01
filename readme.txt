@@ -16,8 +16,7 @@ API](http://www.reeep.org/reegle-tagging-api) to suggest tags for your
 posts. The tags are displayed in a word cloud, with the most relevant tags
 appearing larger.
 
-The plugin is based on [Thoth's Suggested Tags]
-(https://wordpress.org/plugins/thoth-suggested-tags/)
+The plugin is based on [Thoth's Suggested Tags](https://wordpress.org/plugins/thoth-suggested-tags/)
 
 [Follow this project on Github](https://github.com/aptivate/climate-tagger)
 
