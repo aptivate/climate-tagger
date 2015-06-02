@@ -2,7 +2,7 @@
 /*
   Plugin Name: Climate Tagger
   Description: Recommends tags in a tag cloud based on reegle tagging API.
-  Version: 1.0.0
+  Version: 1.0.1
   Author: Aptivate
 */
 
