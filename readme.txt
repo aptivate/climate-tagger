@@ -1,22 +1,32 @@
 === Climate Tagger ===
 Contributors: Aptivate
-Tags: tags, tag cloud, suggestion, tag suggestion, reegle api
+Tags: tags, tag cloud, suggestion, tag suggestion, climate tagger, api
 Requires at least: 3.7
 Tested up to: 4.2.2
-Stable tag: 1.0.1
+Stable tag: 1.0.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-Suggests tags for your posts using the reegle Tagging API
+Suggests tags for your posts based on an experts-vetted climate thesaurus, using
+the Climate Tagger API
 
 == Description ==
 
-This plugin uses the [reegle Tagging
-API](http://www.reeep.org/reegle-tagging-api) to suggest tags for your
-posts. The tags are displayed in a word cloud, with the most relevant tags
-appearing larger.
+The Climate Tagger Plugin for WordPress is a simple, FREE and easy-to-use way to
+integrate the well-known Climate Tagger API into your WordPress site. The
+[Climate Tagger API](api.climatetagger.net) has been helping knowledge-driven web
+sites better catalogue, categorize, contextualize and connect their data with
+that from the broader climate knowledge community since 2011. The Climate Tagger
+is backed by an expansive Climate Compatible Development Thesaurus, developed by
+experts in multiple fields and continuously updated to remain current.
 
-The plugin is based on [Thoth's Suggested Tags](https://wordpress.org/plugins/thoth-suggested-tags/)
+The tags suggested by the Climate Tagger are displayed in a word cloud, with the
+most relevant tags appearing larger.
+
+The plugin is based on [Thoth's Suggested
+Tags](https://wordpress.org/plugins/thoth-suggested-tags/). More information
+about the Climate Tagger is available at
+[http://www.climatetagger.net](http://www.climatetagger.net)
 
 [Follow this project on Github](https://github.com/aptivate/climate-tagger)
 
@@ -25,17 +35,23 @@ The plugin is based on [Thoth's Suggested Tags](https://wordpress.org/plugins/th
 
 1. Upload the plugin to the `/wp-content/plugins/` directory.
 2. Activate it through the **Plugins** menu in WordPress.
-3. [Register with reegle for your API key](http://api.reegle.info/register)
+3. Register at [http://api.climatetagger.net/register](http://api.climatetagger.net/register) to get your FREE API token (or use your exiting one)
 4. Enable the plugin and enter the API key (**Settings** -> **Climate Tagger**)
-5. The Suggested Tags box should now appear when you create a post.
+5. The **Suggested Tags** box will appear on the right hand side when you create a post (**Save Draft** to refresh tag suggestions after you added your text or made changes..
+6. Select any of the suggested tags from the word cloud to automatically add them to your article
+7. If you wish tag suggestions to appear for pages as well as posts, add `page` to the comma-separated list of **Post types** on the **Settings** page
 
 == Changelog ==
 
-= 1.0.0 =
-* First version
+= 1.0.2 =
+* Documentation updates
+* Replaced references to reegle API with Climate Tagger
 
 = 1.0.1 =
 * Documentation updates only
+
+= 1.0.0 =
+* First version
 
 == Upgrade Notice ==
 

@@ -1,8 +1,8 @@
 <?php
 /*
   Plugin Name: Climate Tagger
-  Description: Recommends tags in a tag cloud based on reegle tagging API.
-  Version: 1.0.1
+  Description: Recommends tags in a tag cloud based on Climate Tagger API.
+  Version: 1.0.2
   Author: Aptivate
 */
 
@@ -75,7 +75,7 @@ class ClimateTagger {
 			'<input type="text" id="climate-tagger-token" name="climate_tagger_general_settings[token]" value="%s" size="50" />',
 			esc_attr( $options['token'] )
 		);
-		echo '<br /><span class="description">A valid authentication token that has been generated in the reegle API dashboard. <a href="http://api.reegle.info/register/" target="_blank">http://api.reegle.info/register</a></span>';
+		echo '<br /><span class="description">A valid authentication token that has been generated in the Climate Tagger API dashboard. <a href="http://api.climatetagger.net/register/" target="_blank">http://api.climatetagger.net/register</a></span>';
 		?>
 		</td>
 		</tr>
@@ -101,7 +101,7 @@ class ClimateTagger {
 			'<input type="text" id="climate-tagger-limit" name="climate_tagger_general_settings[limit]" value="%s" size="5" />',
 			esc_attr( $options['limit'] )
 		);
-		echo '<br /><span class="description">Maximum number of tags to retrieve from the reegle API and display in the word cloud.</span>';
+		echo '<br /><span class="description">Maximum number of tags to retrieve from the Climate Tagger API and display in the word cloud.</span>';
 		?>
 		</td>
 		</tr>
@@ -130,7 +130,7 @@ class ClimateTagger {
 		foreach ( $post_types as $post_type ) {
 			add_meta_box(
 				'boxid',
-				'Suggested Tags (reegle)',
+				'Suggested Tags (Climate Tagger)',
 				array( ClimateTagger, 'box_routine' ),
 				trim( $post_type ),
 				'side',
@@ -139,7 +139,7 @@ class ClimateTagger {
 	}
 
 	function box_routine() {
-		$response = self::get_reegle_tagger_response();
+		$response = self::get_climate_tagger_response();
 
 		if ( is_wp_error( $response ) ) {
 			echo $response->get_error_message();
@@ -186,7 +186,7 @@ class ClimateTagger {
 		echo '&nbsp;&nbsp;&nbsp;';
 	}
 
-	function get_reegle_tagger_response() {
+	function get_climate_tagger_response() {
 		global $post;
 
 		$content = $post->post_title .  ' ' . $post->post_content;
@@ -200,7 +200,7 @@ class ClimateTagger {
 			return $content;
 		}
 
-		// http://api.reegle.info/documentation
+		// http://api.climatetagger.net/documentation/
 
 		$url = 'http://api.reegle.info/service/extract';
 

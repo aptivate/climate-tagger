@@ -23,7 +23,7 @@ class PluginTest extends ClimateTaggerTestBase {
 
 		$this->get_new_post();
 
-		$response = $tagger->get_reegle_tagger_response();
+		$response = $tagger->get_climate_tagger_response();
 
 		$this->assertThat( $response, $this->isInstanceOf( 'WP_Error' ) );
 	}
@@ -38,7 +38,7 @@ class PluginTest extends ClimateTaggerTestBase {
 		$post = $this->get_new_post();
 		$post->post_title = 'FEATURE: Three Steps to Decarbonising Development for a Zero-Carbon Future';
 
-		$tagger->get_reegle_tagger_response();
+		$tagger->get_climate_tagger_response();
 
 		global $_CLIMATE_TAGGER_MOCK_POST;
 
@@ -62,7 +62,7 @@ A new World Bank report lays out three steps for a smooth transition to a zero-c
 EOT;
 		$post->post_content = $content;
 
-		$tagger->get_reegle_tagger_response();
+		$tagger->get_climate_tagger_response();
 
 		global $_CLIMATE_TAGGER_MOCK_POST;
 
@@ -79,7 +79,7 @@ EOT;
 
 		$this->get_new_post();
 
-		$tagger->get_reegle_tagger_response();
+		$tagger->get_climate_tagger_response();
 
 		global $_CLIMATE_TAGGER_MOCK_POST;
 
@@ -100,7 +100,7 @@ EOT;
 
 		$this->get_new_post();
 
-		$tagger->get_reegle_tagger_response();
+		$tagger->get_climate_tagger_response();
 
 		global $_CLIMATE_TAGGER_MOCK_POST;
 
@@ -121,7 +121,7 @@ EOT;
 
 		$this->get_new_post();
 
-		$tagger->get_reegle_tagger_response();
+		$tagger->get_climate_tagger_response();
 
 		global $_CLIMATE_TAGGER_MOCK_POST;
 
@@ -141,7 +141,7 @@ EOT;
 
 		$this->get_new_post();
 
-		$tagger->get_reegle_tagger_response();
+		$tagger->get_climate_tagger_response();
 
 		global $_CLIMATE_TAGGER_MOCK_POST;
 
@@ -161,7 +161,7 @@ EOT;
 
 		$this->get_new_post();
 
-		$tagger->get_reegle_tagger_response();
+		$tagger->get_climate_tagger_response();
 
 		global $_CLIMATE_TAGGER_MOCK_POST;
 
@@ -178,7 +178,7 @@ EOT;
 
 		$this->get_new_post();
 
-		$tagger->get_reegle_tagger_response();
+		$tagger->get_climate_tagger_response();
 
 		global $_CLIMATE_TAGGER_MOCK_URL;
 
