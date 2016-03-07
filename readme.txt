@@ -43,6 +43,9 @@ about the Climate Tagger is available at
 
 == Changelog ==
 
+= 1.0.3 =
+* Added the possibility to select a certain project in the Climate Tagger configuration
+
 = 1.0.2 =
 * Documentation updates
 * Replaced references to reegle API with Climate Tagger

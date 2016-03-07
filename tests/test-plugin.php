@@ -184,7 +184,7 @@ EOT;
 
 		$this->assertThat(
 			$_CLIMATE_TAGGER_MOCK_URL,
-			$this->equalTo( 'http://api.reegle.info/service/extract' )
+			$this->equalTo( 'http://api.climatetagger.net/service/extract' )
 		);
 	}
 
