@@ -110,7 +110,7 @@ class ClimateTagger {
 										echo '<option value="' . $key . '" ' . $selected . '>' . $project['label'] . '</option>';
 									}
 									echo '</select>';
-									echo '<br/><span class="description">Select one of the Climate Thesauri.</span>';
+									echo '<br/><span class="description">Depending on the focus of your resources, you can now select a specific sector of the Climate Tagger or use all sectors by selecting "Full Climate Thesaurus (default)".<br />This new feature allows even more targeted tagging of your clean energy and climate resources.</span>';
 								}
 								?>
 							</td>
