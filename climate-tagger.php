@@ -2,7 +2,7 @@
 /*
   Plugin Name: Climate Tagger
   Description: Recommends tags in a tag cloud based on Climate Tagger API.
-  Version: 1.0.2
+  Version: 1.0.4
   Author: Aptivate
 */
 
@@ -252,14 +252,13 @@ class ClimateTagger {
 
 		if ( ! empty( $result ) ) {
 			foreach ( $result as $project ) {
-				$key = self::create_machine_name_from_label( $project['title'] );
-				if ( $key == 'reegle_api_thesaurus' ) {
+				$key = self::create_machine_name_from_label( $project );
+				if ( $key == 'select_all_climate_tagger_thesaurus_' ) {
 					$key = 'default';
-					$project['title'] = 'Full Climate Thesaurus (default)';
 				}
 				$projects[ $key ] = array(
-					'label' => $project['title'],
-					'uuid'  => $project['id'],
+					'label' => $project,
+					'uuid'  => $project,
 				);
 			}
 		}
@@ -298,7 +297,7 @@ class ClimateTagger {
 			$projects = self::get_climate_tagger_projects();
 		}
 		if ( ! empty( $projects ) && isset( $options['project'] ) ) {
-			$fields['projectId'] = $projects[ $options['project'] ]['uuid'];
+			$fields['tagger'] = $projects[ $options['project'] ]['uuid'];
 		}
 
 		return wp_remote_post( $url, array( 'body' => $fields ) );
