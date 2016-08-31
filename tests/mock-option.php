@@ -9,6 +9,7 @@ function mock_get_option( $option, $default = false ) {
 			$defaults = array(
 				'limit' => '',
 				'token' => '',
+				'project' => '',
 			);
 
 			global $_CLIMATE_TAGGER_MOCK_OPTIONS;

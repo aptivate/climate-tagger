@@ -2,6 +2,7 @@
 
 require_once 'climate-tagger.php';
 require_once 'mock-remote-post.php';
+require_once 'mock-remote-get.php';
 require_once 'mock-option.php';
 
 require_once 'ClimateTaggerTestBase.php';
@@ -172,6 +173,26 @@ EOT;
 			$this->equalTo( '25' )
 		);
 	}
+
+	public function test_project_selection_retrieved_from_options() {
+		$tagger = new ClimateTagger();
+
+		$this->set_option( 'project',
+			'climate_change_adaptation' );
+
+		$this->get_new_post();
+
+		$tagger->get_climate_tagger_response();
+
+		global $_CLIMATE_TAGGER_MOCK_POST;
+
+		$project = $_CLIMATE_TAGGER_MOCK_POST['tagger'];
+
+		$this->assertThat(
+			$project,
+			$this->equalTo( 'Climate Change Adaptation' )
+		);
+  }
 
 	public function test_api_url() {
 		$tagger = new ClimateTagger();

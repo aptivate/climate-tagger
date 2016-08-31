@@ -293,10 +293,10 @@ class ClimateTagger {
 		);
 
 		$projects = array();
-		if ( 'default' != $options['project'] ) {
+		if ( isset( $options['project'] ) && 'default' != $options['project'] ) {
 			$projects = self::get_climate_tagger_projects();
 		}
-		if ( ! empty( $projects ) && isset( $options['project'] ) ) {
+		if ( isset( $options['project'] ) && !empty( $projects[ $options['project'] ] ) ) {
 			$fields['tagger'] = $projects[ $options['project'] ]['uuid'];
 		}
 
