@@ -178,7 +178,7 @@ EOT;
 		$tagger = new ClimateTagger();
 
 		$this->set_option( 'project',
-			'climate_change_adaptation' );
+			'Climate Change Adaptation' );
 
 		$this->get_new_post();
 
