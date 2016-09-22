@@ -2,7 +2,7 @@
 /*
   Plugin Name: Climate Tagger
   Description: Recommends tags in a tag cloud based on Climate Tagger API.
-  Version: 1.0.4
+  Version: 1.0.3
   Author: Aptivate
 */
 
@@ -13,11 +13,11 @@ if ( is_dir( WPMU_PLUGIN_DIR . '/climate-tagger' ) ) {
 }
 
 // Documentation: http://api.climatetagger.net/documentation/
-define('CLIMATE_TAGGER_API_URL', 'http://api.climatetagger.net');
+define( 'CLIMATE_TAGGER_API_URL', 'http://api.climatetagger.net' );
 
 class ClimateTagger {
 
-	function admin_menu() {
+	static function admin_menu() {
 		add_options_page(
 			'Climate Tagger',
 			'Climate Tagger',
@@ -28,7 +28,7 @@ class ClimateTagger {
 
 	}
 
-	function admin_init() {
+	static function admin_init() {
 		self::set_defaults();
 
 		register_setting(
@@ -43,7 +43,7 @@ class ClimateTagger {
 		) );
 	}
 
-	function set_defaults() {
+	static function set_defaults() {
 		$options = get_option( 'climate_tagger_general_settings' );
 
 		$options = wp_parse_args(
@@ -59,7 +59,7 @@ class ClimateTagger {
 		update_option( 'climate_tagger_general_settings', $options );
 	}
 
-	function add_action_links( $links ) {
+	static function add_action_links( $links ) {
 		return array_merge(
 			array(
 				'settings' => '<a href="' . admin_url( 'options-general.php?page=climate-tagger' ) . '">Settings</a>',
@@ -68,7 +68,7 @@ class ClimateTagger {
 		);
 	}
 
-	function add_options_page_callback() {
+	static function add_options_page_callback() {
 		?>
 		<div class="wrap">
 			<h2>Climate Tagger by Aptivate</h2>
@@ -105,12 +105,12 @@ class ClimateTagger {
 									echo 'Please check your authentication token above and click the "Save Changes" button before you can select a Climate Thesaurus.';
 								} else {
 									echo '<select id="climate-tagger-project" name="climate_tagger_general_settings[project]">';
-									foreach ( $projects as $key => $project ) {
-										$selected = ( $key == $options['project'] ) ? 'selected="selected"' : '';
-										echo '<option value="' . $key . '" ' . $selected . '>' . $project['label'] . '</option>';
+									foreach ( $projects as $project ) {
+										$selected = ( $project == $options['project'] ) ? 'selected="selected"' : '';
+										echo '<option value="' . $project . '" ' . $selected . '>' . $project . '</option>';
 									}
 									echo '</select>';
-									echo '<br/><span class="description">Depending on the focus of your resources, you can now select a specific sector of the Climate Tagger or use all sectors by selecting "Full Climate Thesaurus (default)".<br />This new feature allows even more targeted tagging of your clean energy and climate resources.</span>';
+									echo '<br/><span class="description">Depending on the focus of your resources, you can now select a specific sector of the Climate Tagger or use all sectors by selecting "Select all (Climate Tagger)".<br />This new feature allows even more targeted tagging of your clean energy and climate resources.</span>';
 								}
 								?>
 							</td>
@@ -154,7 +154,7 @@ class ClimateTagger {
 		<?php
 	}
 
-	function add_box() {
+	static function add_box() {
 		$options = get_option( 'climate_tagger_general_settings' );
 
 		$post_types = explode( ',', $options['post_types'] );
@@ -171,7 +171,7 @@ class ClimateTagger {
 		}
 	}
 
-	function box_routine() {
+	static function box_routine() {
 		$response = self::get_climate_tagger_response();
 
 		if ( is_wp_error( $response ) ) {
@@ -196,7 +196,7 @@ class ClimateTagger {
 		self::print_tag_cloud( $tags_post );
 	}
 
-	function print_tag_cloud( $tags_rec ) {
+	static function print_tag_cloud( $tags_rec ) {
 		arsort( $tags_rec );
 
 		$min_size = 10;
@@ -223,7 +223,7 @@ class ClimateTagger {
 		echo '&nbsp;&nbsp;&nbsp;';
 	}
 
-	function get_climate_tagger_projects() {
+	static function get_climate_tagger_projects() {
 		$options = get_option( 'climate_tagger_general_settings' );
 		$url     = CLIMATE_TAGGER_API_URL . '/service/projects';
 		$url     = $url . '?token=' . $options['token'];
@@ -246,27 +246,20 @@ class ClimateTagger {
 		return $projects;
 	}
 
-	function get_projects_from_response( $response ) {
+	static function get_projects_from_response( $response ) {
 		$result   = json_decode( $response['body'], TRUE );
 		$projects = array();
 
 		if ( ! empty( $result ) ) {
 			foreach ( $result as $project ) {
-				$key = self::create_machine_name_from_label( $project );
-				if ( $key == 'select_all_climate_tagger_thesaurus_' ) {
-					$key = 'default';
-				}
-				$projects[ $key ] = array(
-					'label' => $project,
-					'uuid'  => $project,
-				);
+				$projects[] = trim( $project );
 			}
 		}
 
 		return $projects;
 	}
 
-	function get_climate_tagger_response() {
+	static function get_climate_tagger_response() {
 		global $post;
 
 		$content = $post->post_title . ' ' . $post->post_content;
@@ -292,18 +285,14 @@ class ClimateTagger {
 			'countConcepts' => $options['limit'],
 		);
 
-		$projects = array();
-		if ( isset( $options['project'] ) && 'default' != $options['project'] ) {
-			$projects = self::get_climate_tagger_projects();
-		}
-		if ( isset( $options['project'] ) && !empty( $projects[ $options['project'] ] ) ) {
-			$fields['tagger'] = $projects[ $options['project'] ]['uuid'];
+		if ( isset( $options['project'] ) ) {
+			$fields['tagger'] = $options['project'];
 		}
 
 		return wp_remote_post( $url, array( 'body' => $fields ) );
 	}
 
-	function get_tags_from_response( $response ) {
+	static function get_tags_from_response( $response ) {
 		$result = json_decode( $response['body'], TRUE );
 
 		$concepts = $result['concepts'];
@@ -317,18 +306,12 @@ class ClimateTagger {
 		return $tags;
 	}
 
-	function admin_add_my_script() {
+	static function admin_add_my_script() {
 		wp_enqueue_script(
 			'climate-tagger-add-tag',
 			CLIMATE_TAGGER_INCLUDES . '/climate-tagger-add-tag.js',
 			array( 'jquery' )
 		);
-	}
-
-	function create_machine_name_from_label( $label ) {
-		$label = strtolower( trim( $label ) );
-
-		return preg_replace( '/[^a-z0-9_]+/', '_', $label );
 	}
 }
 

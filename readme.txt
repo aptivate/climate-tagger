@@ -3,7 +3,7 @@ Contributors: Aptivate
 Tags: tags, tag cloud, suggestion, tag suggestion, climate tagger, api
 Requires at least: 3.7
 Tested up to: 4.2.2
-Stable tag: 1.0.4
+Stable tag: 1.0.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -43,11 +43,9 @@ about the Climate Tagger is available at
 
 == Changelog ==
 
-= 1.0.4 =
-* Adapted methods after ClimateTagger API changes
-
 = 1.0.3 =
 * Added the possibility to select a certain project in the Climate Tagger configuration
+* Adapted methods after ClimateTagger API changes
 
 = 1.0.2 =
 * Documentation updates

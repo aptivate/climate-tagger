@@ -6,8 +6,8 @@ function mock_wp_remote_get( $url ) {
 
 	$_CLIMATE_TAGGER_MOCK_URL = $url;
 
-  $response['response']['code'] = 200;
-  $response['body'] = json_encode( array( 'Climate Change Adaptation' ) );
+	$response['response']['code'] = 200;
+	$response['body']             = json_encode( array( 'Climate Change Adaptation' ) );
 
 	return $response;
 }
