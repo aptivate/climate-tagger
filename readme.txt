@@ -44,9 +44,8 @@ about the Climate Tagger is available at
 == Changelog ==
 
 = 1.0.3 =
-Props [@swc-pdi](https://github.com/swc-pdi)
-* Added the possibility to select a certain project in the Climate Tagger configuration
-* Adapted methods after ClimateTagger API changes
+* Added the possibility to select a certain project in the Climate Tagger configuration. Props [@swc-pdi](https://github.com/swc-pdi)
+* Adapted methods after ClimateTagger API changes. Props [@swc-pdi](https://github.com/swc-pdi)
 
 = 1.0.2 =
 * Documentation updates
