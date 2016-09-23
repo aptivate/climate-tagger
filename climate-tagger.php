@@ -52,7 +52,6 @@ class ClimateTagger {
 				'token'      => '',
 				'limit'      => '20',
 				'post_types' => 'post',
-				'project'    => 'default',
 			)
 		);
 
